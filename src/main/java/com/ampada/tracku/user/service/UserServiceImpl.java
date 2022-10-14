@@ -1,6 +1,7 @@
 package com.ampada.tracku.user.service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
@@ -45,6 +46,12 @@ public class UserServiceImpl implements UserService {
 			throw new DomainException("user not found!");
 		}
 		return LoginResponse.builder().username(user.get().getUsername()).build();
+	}
+
+	@Override
+	public List<User> getByIds(@NotNull List<Long> ids) throws DomainException {
+
+		return (List<User>) userRepository.findAllById(ids);
 	}
 
 }

@@ -10,9 +10,9 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,7 +23,7 @@ import com.ampada.tracku.user.dto.LoginRequest;
 import com.ampada.tracku.user.dto.LoginResponse;
 import com.ampada.tracku.user.entity.User;
 import com.ampada.tracku.user.repository.UserRepository;
-import com.ampada.tracku.user.service.UserService;
+import com.ampada.tracku.user.service.UserServiceImpl;
 
 import ir.fanap.crm.utility.test.UnitTest;
 
@@ -35,13 +35,12 @@ import ir.fanap.crm.utility.test.UnitTest;
 @Category(UnitTest.class)
 public class AuthenticateUserTest {
 
-	@Autowired
-	private UserService userService;
+	@InjectMocks
+	private UserServiceImpl userService;
 	@Mock
 	private UserRepository userRepository;
 
 	private LoginRequest request;
-	private Optional<User> user;
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -50,9 +49,7 @@ public class AuthenticateUserTest {
 	public void setup() throws DomainException {
 
 		request = LoginRequest.builder().username("test").password("test").build();
-		User testUser = User.builder().username("test").password("test").build();
-		user = Optional.of(testUser);
-		Mockito.doReturn(user).when(userRepository).findByUsernameAndPassword("test", "test");
+		Mockito.when(userRepository.findByUsernameAndPassword(Mockito.any(), Mockito.any())).thenReturn(Optional.ofNullable(null));
 	}
 
 	@Test
@@ -88,6 +85,7 @@ public class AuthenticateUserTest {
 	@Test
 	public void ok() throws DomainException {
 
+		Mockito.when(userRepository.findByUsernameAndPassword(Mockito.any(), Mockito.any())).thenReturn(Optional.of(User.builder().username("test").password("test").build()));
 		LoginResponse response = userService.authenticate(request);
 		Assert.assertNotNull(response);
 		Assert.assertEquals(response.getUsername(), request.getUsername());
