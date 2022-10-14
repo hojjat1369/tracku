@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.ampada.tracku.common.exception.DomainException;
+import com.ampada.tracku.common.util.SecurityUtil;
 import com.ampada.tracku.user.dto.CreateUserRequest;
 import com.ampada.tracku.user.dto.CreateUserResponse;
 import com.ampada.tracku.user.dto.LoginRequest;
@@ -23,17 +24,20 @@ public class UserServiceImpl implements UserService {
 
 	private ModelMapper modelMapper;
 	private UserRepository userRepository;
+	private SecurityUtil securityUtil;
 
-	public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+	public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, SecurityUtil securityUtil) {
 
 		this.userRepository = userRepository;
 		this.modelMapper = modelMapper;
+		this.securityUtil = securityUtil;
 	}
 
 	@Override
 	public CreateUserResponse create(@NotNull CreateUserRequest request) throws DomainException {
 
 		User user = modelMapper.map(request, User.class);
+		user.setPassword(securityUtil.getSHA512SecurePassword(request.getPassword()));
 		userRepository.save(user);
 		return CreateUserResponse.builder().username(user.getUsername()).build();
 	}
@@ -41,7 +45,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public LoginResponse authenticate(@NotNull LoginRequest request) throws DomainException {
 
-		Optional<User> user = userRepository.findByUsernameAndPassword(request.getUsername(), request.getPassword());
+		Optional<User> user = userRepository.findByUsernameAndPassword(request.getUsername(), securityUtil.getSHA512SecurePassword(request.getPassword()));
 		if (!user.isPresent()){
 			throw new DomainException("user not found!");
 		}
