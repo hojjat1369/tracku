@@ -10,7 +10,7 @@ import com.ampada.tracku.user.entity.User;
 
 
 @Repository
-public interface UserRepository extends BaseRepository<User , Long>, UserDslRepository {
+public interface UserRepository extends BaseRepository<User , Long> {
 
 	Optional<User> findByUsername(String username);
 

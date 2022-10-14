@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.ampada.tracku.board.entity.Board;
 import com.ampada.tracku.common.entity.AbstractEntity;
@@ -25,8 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-@Entity
-@Table(name = "card")
+@Document
 @Getter
 @Setter
 @Builder

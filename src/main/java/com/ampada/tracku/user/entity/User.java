@@ -1,10 +1,9 @@
 package com.ampada.tracku.user.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.ampada.tracku.common.entity.AbstractEntity;
 
@@ -15,8 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-@Entity
-@Table(name = "party_user", uniqueConstraints = { @UniqueConstraint(columnNames = "username") })
+@Document
 @Getter
 @Setter
 @Builder

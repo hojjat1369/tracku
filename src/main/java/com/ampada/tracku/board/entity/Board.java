@@ -2,9 +2,9 @@ package com.ampada.tracku.board.entity;
 
 
 import javax.jdo.annotations.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.ampada.tracku.common.entity.AbstractEntity;
 
@@ -15,8 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-@Entity
-@Table(name = "board")
+@Document
 @Getter
 @Setter
 @Builder
