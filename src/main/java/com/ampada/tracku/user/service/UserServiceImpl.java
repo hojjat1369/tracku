@@ -38,11 +38,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public LoginResponse create(@NotNull LoginRequest request) throws DomainException {
+	public LoginResponse authenticate(@NotNull LoginRequest request) throws DomainException {
 
-		Optional<User> findByUsernameAndPassword = userRepository.findByUsernameAndPassword(request.getUsername(), request.getPassword());
-
-		return LoginResponse.builder().username(findByUsernameAndPassword.get().getUsername()).build();
+		Optional<User> user = userRepository.findByUsernameAndPassword(request.getUsername(), request.getPassword());
+		if (!user.isPresent()){
+			throw new DomainException("user not found!");
+		}
+		return LoginResponse.builder().username(user.get().getUsername()).build();
 	}
 
 }

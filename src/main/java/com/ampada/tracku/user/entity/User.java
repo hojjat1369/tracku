@@ -8,7 +8,10 @@ import javax.validation.constraints.NotBlank;
 
 import com.ampada.tracku.common.entity.AbstractEntity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -16,10 +19,14 @@ import lombok.Setter;
 @Table(name = "party_user", uniqueConstraints = { @UniqueConstraint(columnNames = "username") })
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User extends AbstractEntity {
 
-	@NotBlank
+	@NotBlank(message = "username cannot be blank!")
 	private String username;
+	@NotBlank(message = "password cannot be blank!")
 	private String password;
 
 }

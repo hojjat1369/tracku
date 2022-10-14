@@ -1,7 +1,7 @@
 package com.ampada.tracku.user.dto;
 
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +13,8 @@ import lombok.Setter;
 @Setter
 public class CreateUserRequest {
 
-	@NotNull
+	@NotBlank(message = "username cannot be blank!")
 	private String username;
-	@NotNull
+	@NotBlank(message = "password cannot be blank!")
 	private String password;
 }
