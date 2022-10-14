@@ -9,6 +9,8 @@ import com.ampada.tracku.board.dto.CreateBoardRequest;
 import com.ampada.tracku.board.dto.CreateBoardResponse;
 import com.ampada.tracku.board.dto.DeleteBoardRequest;
 import com.ampada.tracku.board.dto.DeleteBoardResponse;
+import com.ampada.tracku.board.dto.GetBoardRequest;
+import com.ampada.tracku.board.dto.GetBoardResponse;
 import com.ampada.tracku.board.dto.UpdateBoardRequest;
 import com.ampada.tracku.board.dto.UpdateBoardResponse;
 import com.ampada.tracku.board.entity.Board;
@@ -22,6 +24,8 @@ public interface BoardService {
 	UpdateBoardResponse update(@NotNull UpdateBoardRequest request) throws DomainException;
 
 	DeleteBoardResponse delete(@NotNull DeleteBoardRequest request) throws DomainException;
+
+	GetBoardResponse get(@NotNull GetBoardRequest request) throws DomainException;
 
 	Optional<Board> getById(@NotNull Long id) throws DomainException;
 

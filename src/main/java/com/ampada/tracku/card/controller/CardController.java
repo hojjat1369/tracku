@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +20,8 @@ import com.ampada.tracku.card.dto.CreateCardRequest;
 import com.ampada.tracku.card.dto.CreateCardResponse;
 import com.ampada.tracku.card.dto.DeleteCardRequest;
 import com.ampada.tracku.card.dto.DeleteCardResponse;
+import com.ampada.tracku.card.dto.GetCardRequest;
+import com.ampada.tracku.card.dto.GetCardResponse;
 import com.ampada.tracku.card.dto.UpdateCardRequest;
 import com.ampada.tracku.card.dto.UpdateCardResponse;
 import com.ampada.tracku.card.service.CardService;
@@ -55,6 +58,12 @@ public class CardController {
 	public ResponseEntity<DeleteCardResponse> delete(@Valid @RequestBody DeleteCardRequest model, HttpServletRequest request) throws DomainException {
 
 		return new ResponseEntity<>(service.delete(model), HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/list")
+	public ResponseEntity<GetCardResponse> get(@Valid @RequestBody GetCardRequest model, HttpServletRequest request) throws DomainException {
+
+		return new ResponseEntity<>(service.getCards(model), HttpStatus.OK);
 	}
 
 }

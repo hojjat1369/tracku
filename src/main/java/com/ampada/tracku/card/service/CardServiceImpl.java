@@ -1,6 +1,7 @@
 package com.ampada.tracku.card.service;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -11,14 +12,18 @@ import org.springframework.stereotype.Service;
 
 import com.ampada.tracku.board.entity.Board;
 import com.ampada.tracku.board.service.BoardService;
+import com.ampada.tracku.card.dto.CardDetail;
 import com.ampada.tracku.card.dto.CreateCardRequest;
 import com.ampada.tracku.card.dto.CreateCardResponse;
 import com.ampada.tracku.card.dto.DeleteCardRequest;
 import com.ampada.tracku.card.dto.DeleteCardResponse;
+import com.ampada.tracku.card.dto.GetCardRequest;
+import com.ampada.tracku.card.dto.GetCardResponse;
 import com.ampada.tracku.card.dto.UpdateCardRequest;
 import com.ampada.tracku.card.dto.UpdateCardResponse;
 import com.ampada.tracku.card.entity.Card;
 import com.ampada.tracku.card.entity.Card.CardBuilder;
+import com.ampada.tracku.card.repository.CardDslRepository;
 import com.ampada.tracku.card.repository.CardRepository;
 import com.ampada.tracku.common.exception.DomainException;
 import com.ampada.tracku.user.entity.User;
@@ -29,14 +34,16 @@ import com.ampada.tracku.user.service.UserService;
 public class CardServiceImpl implements CardService {
 
 	private CardRepository repository;
+	private CardDslRepository dslRepository;
 	private BoardService boardService;
 	private UserService userService;
 
-	public CardServiceImpl(CardRepository repository, UserService userService, BoardService boardService) {
+	public CardServiceImpl(CardRepository repository, UserService userService, BoardService boardService, CardDslRepository dslRepository) {
 
 		this.repository = repository;
 		this.userService = userService;
 		this.boardService = boardService;
+		this.dslRepository = dslRepository;
 	}
 
 	@Override
@@ -79,6 +86,19 @@ public class CardServiceImpl implements CardService {
 			throw new DomainException("card not found!");
 		}
 		return DeleteCardResponse.builder().id(request.getId()).build();
+	}
+
+	@Override
+	public GetCardResponse getCards(GetCardRequest request) {
+
+		GetCardResponse response = GetCardResponse.builder().cards(new ArrayList<>()).build();
+		List<Card> cards = dslRepository.getCards(request);
+		if (!cards.isEmpty()){
+			for (Card card : cards){
+				response.getCards().add(CardDetail.builder().boardId(card.getBoard().getId()).cardTitle(card.getCardTitle()).userId(card.getUserIds()).build());
+			}
+		}
+		return response;
 	}
 
 }

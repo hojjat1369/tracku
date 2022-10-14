@@ -1,8 +1,9 @@
 package com.ampada.tracku.card.entity;
 
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,6 +43,14 @@ public class Card extends AbstractEntity {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_cards", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "card_id"))
-	private Set<User> users = new HashSet<>();
+	private Set<User> users;
+
+	public List<Long> getUserIds() {
+
+		if (users != null && !users.isEmpty()){
+			return users.stream().map(User::getId).collect(Collectors.toList());
+		}
+		return null;
+	}
 
 }

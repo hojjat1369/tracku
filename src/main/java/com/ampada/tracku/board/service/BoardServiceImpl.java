@@ -12,6 +12,8 @@ import com.ampada.tracku.board.dto.CreateBoardRequest;
 import com.ampada.tracku.board.dto.CreateBoardResponse;
 import com.ampada.tracku.board.dto.DeleteBoardRequest;
 import com.ampada.tracku.board.dto.DeleteBoardResponse;
+import com.ampada.tracku.board.dto.GetBoardRequest;
+import com.ampada.tracku.board.dto.GetBoardResponse;
 import com.ampada.tracku.board.dto.UpdateBoardRequest;
 import com.ampada.tracku.board.dto.UpdateBoardResponse;
 import com.ampada.tracku.board.entity.Board;
@@ -65,6 +67,15 @@ public class BoardServiceImpl implements BoardService {
 			throw new DomainException("board not found!");
 		}
 		return DeleteBoardResponse.builder().id(request.getId()).build();
+	}
+
+	@Override
+	public GetBoardResponse get(@NotNull GetBoardRequest request) throws DomainException {
+
+		Optional<Board> board = repository.findById(request.getId());
+		if (board.isPresent())
+			return GetBoardResponse.builder().boardName(board.get().getBoardName()).id(board.get().getId()).build();
+		throw new DomainException("board not found!");
 	}
 
 	@Override
