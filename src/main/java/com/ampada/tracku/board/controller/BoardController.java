@@ -24,6 +24,7 @@ import com.ampada.tracku.board.dto.GetBoardResponse;
 import com.ampada.tracku.board.dto.UpdateBoardRequest;
 import com.ampada.tracku.board.dto.UpdateBoardResponse;
 import com.ampada.tracku.board.service.BoardService;
+import com.ampada.tracku.common.aspect.Auth;
 import com.ampada.tracku.common.exception.DomainException;
 
 
@@ -40,24 +41,28 @@ public class BoardController {
 	}
 
 	@PostMapping
+	@Auth
 	public ResponseEntity<CreateBoardResponse> create(@Valid @RequestBody CreateBoardRequest model, HttpServletRequest request) throws DomainException {
 
 		return new ResponseEntity<>(service.create(model), HttpStatus.OK);
 	}
 
 	@PutMapping
+	@Auth
 	public ResponseEntity<UpdateBoardResponse> update(@Valid @RequestBody UpdateBoardRequest model, HttpServletRequest request) throws DomainException {
 
 		return new ResponseEntity<>(service.update(model), HttpStatus.OK);
 	}
 
 	@DeleteMapping
+	@Auth
 	public ResponseEntity<DeleteBoardResponse> delete(@Valid @RequestBody DeleteBoardRequest model, HttpServletRequest request) throws DomainException {
 
 		return new ResponseEntity<>(service.delete(model), HttpStatus.OK);
 	}
 
 	@GetMapping
+	@Auth
 	public ResponseEntity<GetBoardResponse> get(@Valid @RequestBody GetBoardRequest model, HttpServletRequest request) throws DomainException {
 
 		return new ResponseEntity<>(service.get(model), HttpStatus.OK);
