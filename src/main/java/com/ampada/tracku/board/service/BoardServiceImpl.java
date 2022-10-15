@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.ampada.tracku.board.dto.CreateBoardRequest;
@@ -20,18 +19,19 @@ import com.ampada.tracku.board.entity.Board;
 import com.ampada.tracku.board.repository.BoardRepository;
 import com.ampada.tracku.common.exception.DomainException;
 import com.ampada.tracku.common.util.ErrorMessage;
+import com.ampada.tracku.user.service.UserService;
 
 
 @Service
 public class BoardServiceImpl implements BoardService {
 
-	private ModelMapper modelMapper;
 	private BoardRepository repository;
+	private UserService userService;
 
-	public BoardServiceImpl(BoardRepository repository, ModelMapper modelMapper) {
+	public BoardServiceImpl(BoardRepository repository, UserService userService) {
 
 		this.repository = repository;
-		this.modelMapper = modelMapper;
+		this.userService = userService;
 	}
 
 	@Override

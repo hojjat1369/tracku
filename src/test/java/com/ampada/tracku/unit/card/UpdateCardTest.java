@@ -18,7 +18,6 @@ import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ampada.tracku.board.entity.Board;
 import com.ampada.tracku.board.service.BoardServiceImpl;
@@ -35,7 +34,6 @@ import ir.fanap.crm.utility.test.UnitTest;
 
 
 @SpringBootTest
-@Transactional
 @ActiveProfiles("jenkins")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Category(UnitTest.class)

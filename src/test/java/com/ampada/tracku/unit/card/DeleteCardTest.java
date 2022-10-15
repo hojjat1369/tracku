@@ -16,20 +16,19 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ampada.tracku.card.dto.DeleteCardRequest;
 import com.ampada.tracku.card.dto.DeleteCardResponse;
-import com.ampada.tracku.card.entity.Card;
 import com.ampada.tracku.card.repository.CardRepository;
 import com.ampada.tracku.card.service.CardServiceImpl;
 import com.ampada.tracku.common.exception.DomainException;
+import com.ampada.tracku.common.util.ErrorMessage;
+import com.ampada.tracku.unit.common.TestUtil;
 
 import ir.fanap.crm.utility.test.UnitTest;
 
 
 @SpringBootTest
-@Transactional
 @ActiveProfiles("jenkins")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Category(UnitTest.class)
@@ -55,9 +54,20 @@ public class DeleteCardTest {
 	public void nullId() throws DomainException {
 
 		Mockito.when(cardRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(null));
-		request.setId("-1");
+		request.setId(null);
 		thrown.expect(DomainException.class);
-		thrown.expectMessage("card not found!");
+		thrown.expectMessage(ErrorMessage.CARD_NOT_BLANK);
+
+		cardService.delete(request);
+	}
+
+	@Test
+	public void invalidId() throws DomainException {
+
+		Mockito.when(cardRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(null));
+		request.setId("invalidId");
+		thrown.expect(DomainException.class);
+		thrown.expectMessage(ErrorMessage.CARD_NOT_FOUND);
 
 		cardService.delete(request);
 	}
@@ -65,7 +75,7 @@ public class DeleteCardTest {
 	@Test
 	public void ok() throws DomainException {
 
-		Mockito.when(cardRepository.findById(Mockito.any())).thenReturn(Optional.of(Card.builder().cardTitle("testCardTitle").build()));
+		Mockito.when(cardRepository.findById(Mockito.any())).thenReturn(Optional.of(TestUtil.getTestCard()));
 		DeleteCardResponse response = cardService.delete(request);
 		Assert.assertNotNull(response);
 	}

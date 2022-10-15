@@ -14,18 +14,21 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.ampada.tracku.board.entity.Board;
 import com.ampada.tracku.board.service.BoardServiceImpl;
 import com.ampada.tracku.card.dto.CreateCardRequest;
 import com.ampada.tracku.card.dto.CreateCardResponse;
+import com.ampada.tracku.card.entity.Card;
 import com.ampada.tracku.card.repository.CardRepository;
 import com.ampada.tracku.card.service.CardServiceImpl;
 import com.ampada.tracku.common.exception.DomainException;
+import com.ampada.tracku.common.util.ErrorMessage;
+import com.ampada.tracku.unit.common.TestUtil;
 import com.ampada.tracku.user.entity.User;
 import com.ampada.tracku.user.service.UserServiceImpl;
 
@@ -56,6 +59,7 @@ public class CreateCardTest {
 	@Before
 	public void setup() {
 
+		MockitoAnnotations.initMocks(this);
 		request = CreateCardRequest.builder().cardTitle("testBoardName").boardId("10").userId(Arrays.asList(1l, 2l)).build();
 		Mockito.doAnswer((Answer<Void>) invocation -> null).when(cardRepository).save(Mockito.any());
 	}
@@ -68,7 +72,20 @@ public class CreateCardTest {
 
 		request.setBoardId(null);
 		thrown.expect(DomainException.class);
-		thrown.expectMessage("board not found!");
+		thrown.expectMessage(ErrorMessage.BOARD_NOT_BLANK);
+
+		cardService.create(request);
+	}
+
+	@Test
+	public void invalidBoardId() throws DomainException {
+
+		Mockito.when(boardService.getById(Mockito.any())).thenReturn(Optional.ofNullable(null));
+		Mockito.when(userService.getByIds(Mockito.any())).thenReturn(Arrays.asList(TestUtil.getTestUser()));
+
+		request.setBoardId("invalidId");
+		thrown.expect(DomainException.class);
+		thrown.expectMessage(ErrorMessage.BOARD_NOT_FOUND);
 
 		cardService.create(request);
 	}
@@ -76,8 +93,9 @@ public class CreateCardTest {
 	@Test
 	public void ok() throws DomainException {
 
-		Mockito.when(boardService.getById(Mockito.any())).thenReturn(Optional.of(Board.builder().boardName("testBoardName").build()));
-		Mockito.when(userService.getByIds(Mockito.any())).thenReturn(Arrays.asList(User.builder().username("testUsername").build()));
+		Mockito.when(cardRepository.save(Mockito.any(Card.class))).thenReturn(TestUtil.getTestCard());
+		Mockito.when(boardService.getById(Mockito.any())).thenReturn(Optional.of(TestUtil.getTestBoard()));
+		Mockito.when(userService.getByIds(Mockito.any())).thenReturn(Arrays.asList(TestUtil.getTestUser()));
 
 		CreateCardResponse response = cardService.create(request);
 		Assert.assertNotNull(response);
