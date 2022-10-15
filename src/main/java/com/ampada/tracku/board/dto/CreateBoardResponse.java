@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class CreateBoardResponse {
 
-	private Long id;
+	private String id;
 	private String boardName;
 }

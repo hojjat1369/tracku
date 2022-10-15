@@ -59,7 +59,7 @@ public class UpdateCardTest {
 	@Before
 	public void setup() {
 
-		request = UpdateCardRequest.builder().id(20l).cardTitle("testBoardName").boardId(10l).userId(Arrays.asList(1l, 2l)).build();
+		request = UpdateCardRequest.builder().id("20").cardTitle("testBoardName").boardId("10").userId(Arrays.asList(1l, 2l)).build();
 		Mockito.doAnswer((Answer<Void>) invocation -> null).when(cardRepository).save(Mockito.any());
 	}
 

@@ -43,7 +43,7 @@ public class CardController {
 
 	@PostMapping
 	@Auth
-	public ResponseEntity<CreateCardResponse> create(@PathVariable("boardId") Long boardId, @Valid @RequestBody CreateCardRequest model, HttpServletRequest request) throws DomainException {
+	public ResponseEntity<CreateCardResponse> create(@PathVariable("boardId") String boardId, @Valid @RequestBody CreateCardRequest model, HttpServletRequest request) throws DomainException {
 
 		model.setBoardId(boardId);
 		return new ResponseEntity<>(service.create(model), HttpStatus.OK);
@@ -51,7 +51,7 @@ public class CardController {
 
 	@PutMapping
 	@Auth
-	public ResponseEntity<UpdateCardResponse> update(@PathVariable("boardId") Long boardId, @Valid @RequestBody UpdateCardRequest model, HttpServletRequest request) throws DomainException {
+	public ResponseEntity<UpdateCardResponse> update(@PathVariable("boardId") String boardId, @Valid @RequestBody UpdateCardRequest model, HttpServletRequest request) throws DomainException {
 
 		model.setBoardId(boardId);
 		return new ResponseEntity<>(service.update(model), HttpStatus.OK);

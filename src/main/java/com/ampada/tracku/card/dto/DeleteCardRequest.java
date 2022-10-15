@@ -14,5 +14,5 @@ import lombok.Setter;
 public class DeleteCardRequest {
 
 	@NotBlank(message = "card cannot be blank!")
-	private Long id;
+	private String id;
 }

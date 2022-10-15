@@ -18,7 +18,6 @@ import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ampada.tracku.board.entity.Board;
 import com.ampada.tracku.board.service.BoardServiceImpl;
@@ -34,7 +33,6 @@ import ir.fanap.crm.utility.test.UnitTest;
 
 
 @SpringBootTest
-@Transactional
 @ActiveProfiles("jenkins")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Category(UnitTest.class)
@@ -58,7 +56,7 @@ public class CreateCardTest {
 	@Before
 	public void setup() {
 
-		request = CreateCardRequest.builder().cardTitle("testBoardName").boardId(10l).userId(Arrays.asList(1l, 2l)).build();
+		request = CreateCardRequest.builder().cardTitle("testBoardName").boardId("10").userId(Arrays.asList(1l, 2l)).build();
 		Mockito.doAnswer((Answer<Void>) invocation -> null).when(cardRepository).save(Mockito.any());
 	}
 

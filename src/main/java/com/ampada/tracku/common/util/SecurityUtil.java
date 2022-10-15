@@ -13,7 +13,7 @@ public class SecurityUtil {
 
 	private static Logger logger = Logger.getLogger(SecurityUtil.class);
 
-	public String getSHA512SecurePassword(String passwordToHash) {
+	public static String getSHA512SecurePassword(String passwordToHash) {
 
 		String generatedPassword = null;
 		String saltProperty = "[B@2f4d3709";

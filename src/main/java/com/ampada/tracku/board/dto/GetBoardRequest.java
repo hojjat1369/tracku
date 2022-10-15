@@ -14,5 +14,5 @@ import lombok.Setter;
 public class GetBoardRequest {
 
 	@NotNull(message = "board id cannot be null")
-	private Long id;
+	private String id;
 }

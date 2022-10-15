@@ -27,6 +27,6 @@ public interface BoardService {
 
 	GetBoardResponse get(@NotNull GetBoardRequest request) throws DomainException;
 
-	Optional<Board> getById(@NotNull Long id) throws DomainException;
+	Optional<Board> getById(@NotNull String id) throws DomainException;
 
 }

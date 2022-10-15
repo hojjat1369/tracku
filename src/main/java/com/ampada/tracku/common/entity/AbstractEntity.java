@@ -4,8 +4,6 @@ package com.ampada.tracku.common.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.Getter;
@@ -24,9 +22,7 @@ public abstract class AbstractEntity {
 	}
 
 	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
 
 	@Column(name = "created_on")
 	private Date createdOn;

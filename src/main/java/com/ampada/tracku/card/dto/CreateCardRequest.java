@@ -20,7 +20,7 @@ public class CreateCardRequest {
 	private String cardTitle;
 
 	@NotNull(message = "boardId cannot be null!")
-	private Long boardId;
+	private String boardId;
 
 	private List<Long> userId;
 }

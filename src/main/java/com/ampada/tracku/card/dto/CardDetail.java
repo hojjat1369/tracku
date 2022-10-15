@@ -14,6 +14,6 @@ import lombok.Setter;
 public class CardDetail {
 
 	private String cardTitle;
-	private Long boardId;
+	private String boardId;
 	private List<Long> userId;
 }

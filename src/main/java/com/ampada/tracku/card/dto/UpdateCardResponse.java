@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class UpdateCardResponse {
 
-	private Long id;
+	private String id;
 	private String cardTitle;
 }

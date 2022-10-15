@@ -11,5 +11,5 @@ import lombok.Setter;
 @Setter
 public class DeleteCardResponse {
 
-	private Long id;
+	private String id;
 }

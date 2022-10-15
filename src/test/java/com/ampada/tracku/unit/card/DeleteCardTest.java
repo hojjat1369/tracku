@@ -48,14 +48,14 @@ public class DeleteCardTest {
 	@Before
 	public void setup() {
 
-		request = DeleteCardRequest.builder().id(10l).build();
+		request = DeleteCardRequest.builder().id("10").build();
 	}
 
 	@Test
 	public void nullId() throws DomainException {
 
 		Mockito.when(cardRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(null));
-		request.setId(-1l);
+		request.setId("-1");
 		thrown.expect(DomainException.class);
 		thrown.expectMessage("card not found!");
 

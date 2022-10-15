@@ -44,7 +44,7 @@ public class Card extends AbstractEntity {
 	@JoinTable(name = "user_cards", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<User> users;
 
-	public List<Long> getUserIds() {
+	public List<String> getUserIds() {
 
 		if (users != null && !users.isEmpty()){
 			return users.stream().map(User::getId).collect(Collectors.toList());

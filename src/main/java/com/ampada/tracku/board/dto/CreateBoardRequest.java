@@ -1,7 +1,10 @@
 package com.ampada.tracku.board.dto;
 
 
-import javax.validation.constraints.NotBlank;
+import com.ampada.tracku.common.dto.CommonRequest;
+import com.ampada.tracku.common.exception.DomainException;
+import com.ampada.tracku.common.util.ErrorMessage;
+import com.ampada.tracku.common.util.ObjectUtil;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +14,15 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class CreateBoardRequest {
+public class CreateBoardRequest extends CommonRequest {
 
-	@NotBlank(message = "boardName cannot be blank!")
+	private static final long serialVersionUID = -7406990496116669285L;
+
 	private String boardName;
+
+	@Override
+	public void validate() throws DomainException {
+
+		ObjectUtil.notNull(boardName, ErrorMessage.BOARD_NAME_NOT_BLANK);
+	}
 }

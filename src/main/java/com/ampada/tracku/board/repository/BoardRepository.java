@@ -8,6 +8,6 @@ import com.ampada.tracku.common.repository.BaseRepository;
 
 
 @Repository
-public interface BoardRepository extends BaseRepository<Board , Long>, BoardDslRepository {
+public interface BoardRepository extends BaseRepository<Board , String>, BoardDslRepository {
 
 }

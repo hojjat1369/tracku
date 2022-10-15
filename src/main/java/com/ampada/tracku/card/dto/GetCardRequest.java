@@ -12,7 +12,7 @@ import lombok.Setter;
 public class GetCardRequest {
 
 	private String cardTitle;
-	private Long userId;
+	private String userId;
 	private int begin;
 	private int length;
 }

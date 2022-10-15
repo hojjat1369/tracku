@@ -11,5 +11,5 @@ import lombok.Setter;
 @Setter
 public class DeleteBoardResponse {
 
-	private Long id;
+	private String id;
 }

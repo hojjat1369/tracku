@@ -13,5 +13,5 @@ public class GetBoardResponse {
 
 	private String boardName;
 
-	private Long id;
+	private String id;
 }

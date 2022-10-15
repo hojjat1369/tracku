@@ -19,6 +19,7 @@ import com.ampada.tracku.board.dto.UpdateBoardResponse;
 import com.ampada.tracku.board.entity.Board;
 import com.ampada.tracku.board.repository.BoardRepository;
 import com.ampada.tracku.common.exception.DomainException;
+import com.ampada.tracku.common.util.ErrorMessage;
 
 
 @Service
@@ -36,7 +37,8 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public CreateBoardResponse create(@NotNull CreateBoardRequest request) throws DomainException {
 
-		Board board = modelMapper.map(request, Board.class);
+		request.validate();
+		Board board = Board.builder().boardName(request.getBoardName()).build();
 		repository.save(board);
 		return CreateBoardResponse.builder().boardName(board.getBoardName()).build();
 	}
@@ -44,13 +46,14 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public UpdateBoardResponse update(@NotNull UpdateBoardRequest request) throws DomainException {
 
+		request.validate();
 		Optional<Board> board = repository.findById(request.getId());
 		if (board.isPresent()){
 			board.get().setBoardName(request.getBoardName());
 			repository.save(board.get());
 		}
 		else{
-			throw new DomainException("board not found!");
+			throw new DomainException(ErrorMessage.BOARD_NOT_FOUND);
 		}
 		return UpdateBoardResponse.builder().id(request.getId()).boardName(request.getBoardName()).build();
 	}
@@ -58,13 +61,14 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public DeleteBoardResponse delete(@NotNull DeleteBoardRequest request) throws DomainException {
 
+		request.validate();
 		Optional<Board> board = repository.findById(request.getId());
 		if (board.isPresent()){
 			board.get().setEnable(false);
 			repository.save(board.get());
 		}
 		else{
-			throw new DomainException("board not found!");
+			throw new DomainException(ErrorMessage.BOARD_NOT_FOUND);
 		}
 		return DeleteBoardResponse.builder().id(request.getId()).build();
 	}
@@ -79,7 +83,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Optional<Board> getById(@NotNull Long id) throws DomainException {
+	public Optional<Board> getById(@NotNull String id) throws DomainException {
 
 		return repository.findById(id);
 	}

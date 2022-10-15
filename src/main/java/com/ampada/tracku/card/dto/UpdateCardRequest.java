@@ -16,9 +16,9 @@ import lombok.Setter;
 public class UpdateCardRequest {
 
 	@NotBlank(message = "card cannot be blank!")
-	private Long id;
+	private String id;
 	private String cardTitle;
-	private Long boardId;
+	private String boardId;
 
 	private List<Long> userId;
 }

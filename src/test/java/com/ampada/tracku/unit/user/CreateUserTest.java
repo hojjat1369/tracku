@@ -1,8 +1,6 @@
 package com.ampada.tracku.unit.user;
 
 
-import javax.validation.ConstraintViolationException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -10,33 +8,33 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ampada.tracku.common.exception.DomainException;
+import com.ampada.tracku.unit.common.TestUtil;
 import com.ampada.tracku.user.dto.CreateUserRequest;
 import com.ampada.tracku.user.dto.CreateUserResponse;
+import com.ampada.tracku.user.entity.User;
 import com.ampada.tracku.user.repository.UserRepository;
-import com.ampada.tracku.user.service.UserService;
+import com.ampada.tracku.user.service.UserServiceImpl;
 
 import ir.fanap.crm.utility.test.UnitTest;
 
 
 @SpringBootTest
-@Transactional
 @ActiveProfiles("jenkins")
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @Category(UnitTest.class)
 public class CreateUserTest {
 
-	@Autowired
-	private UserService userService;
+	@InjectMocks
+	private UserServiceImpl userService;
 	@Mock
 	private UserRepository userRepository;
 
@@ -48,23 +46,15 @@ public class CreateUserTest {
 	@Before
 	public void setup() {
 
+		MockitoAnnotations.initMocks(this);
 		request = CreateUserRequest.builder().username("test").password("test").build();
-		Mockito.doAnswer((Answer<Void>) invocation -> null).when(userRepository).save(Mockito.any());
-	}
-
-	@Test
-	public void nullInput() throws DomainException {
-
-		thrown.expect(IllegalArgumentException.class);
-
-		userService.create(null);
 	}
 
 	@Test
 	public void nullUsername() throws DomainException {
 
 		request.setUsername(null);
-		thrown.expect(ConstraintViolationException.class);
+		thrown.expect(DomainException.class);
 		thrown.expectMessage("username cannot be blank!");
 
 		userService.create(request);
@@ -74,7 +64,7 @@ public class CreateUserTest {
 	public void nullPassword() throws DomainException {
 
 		request.setPassword(null);
-		thrown.expect(ConstraintViolationException.class);
+		thrown.expect(DomainException.class);
 		thrown.expectMessage("password cannot be blank!");
 
 		userService.create(request);
@@ -83,6 +73,7 @@ public class CreateUserTest {
 	@Test
 	public void ok() throws DomainException {
 
+		Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(TestUtil.getTestUser());
 		CreateUserResponse userResponse = userService.create(request);
 		Assert.assertNotNull(userResponse);
 		Assert.assertEquals(userResponse.getUsername(), request.getUsername());

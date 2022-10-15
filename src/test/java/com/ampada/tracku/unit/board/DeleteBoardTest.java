@@ -16,20 +16,19 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ampada.tracku.board.dto.DeleteBoardRequest;
 import com.ampada.tracku.board.dto.DeleteBoardResponse;
-import com.ampada.tracku.board.entity.Board;
 import com.ampada.tracku.board.repository.BoardRepository;
 import com.ampada.tracku.board.service.BoardServiceImpl;
 import com.ampada.tracku.common.exception.DomainException;
+import com.ampada.tracku.common.util.ErrorMessage;
+import com.ampada.tracku.unit.common.TestUtil;
 
 import ir.fanap.crm.utility.test.UnitTest;
 
 
 @SpringBootTest
-@Transactional
 @ActiveProfiles("jenkins")
 @RunWith(SpringJUnit4ClassRunner.class)
 @Category(UnitTest.class)
@@ -48,16 +47,16 @@ public class DeleteBoardTest {
 	@Before
 	public void setup() {
 
-		request = DeleteBoardRequest.builder().id(10l).build();
+		request = DeleteBoardRequest.builder().id("10").build();
 	}
 
 	@Test
 	public void nullId() throws DomainException {
 
 		Mockito.when(boardRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(null));
-		request.setId(-1l);
+		request.setId("-1");
 		thrown.expect(DomainException.class);
-		thrown.expectMessage("board not found!");
+		thrown.expectMessage(ErrorMessage.BOARD_NOT_FOUND);
 
 		boardService.delete(request);
 	}
@@ -65,7 +64,7 @@ public class DeleteBoardTest {
 	@Test
 	public void ok() throws DomainException {
 
-		Mockito.when(boardRepository.findById(Mockito.any())).thenReturn(Optional.of(Board.builder().boardName("testBoardName").build()));
+		Mockito.when(boardRepository.findById(Mockito.any())).thenReturn(Optional.of(TestUtil.getTestBoard()));
 		DeleteBoardResponse response = boardService.delete(request);
 		Assert.assertNotNull(response);
 	}

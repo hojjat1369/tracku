@@ -1,8 +1,6 @@
 package com.ampada.tracku.unit.board;
 
 
-import javax.validation.ConstraintViolationException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -10,33 +8,34 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ampada.tracku.board.dto.CreateBoardRequest;
 import com.ampada.tracku.board.dto.CreateBoardResponse;
+import com.ampada.tracku.board.entity.Board;
 import com.ampada.tracku.board.repository.BoardRepository;
-import com.ampada.tracku.board.service.BoardService;
+import com.ampada.tracku.board.service.BoardServiceImpl;
 import com.ampada.tracku.common.exception.DomainException;
+import com.ampada.tracku.common.util.ErrorMessage;
+import com.ampada.tracku.unit.common.TestUtil;
 
 import ir.fanap.crm.utility.test.UnitTest;
 
 
 @SpringBootTest
-@Transactional
 @ActiveProfiles("jenkins")
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @Category(UnitTest.class)
 public class CreateBoardTest {
 
-	@Autowired
-	private BoardService boardService;
+	@InjectMocks
+	private BoardServiceImpl boardService;
 	@Mock
 	private BoardRepository boardRepository;
 
@@ -48,24 +47,16 @@ public class CreateBoardTest {
 	@Before
 	public void setup() {
 
+		MockitoAnnotations.initMocks(this);
 		request = CreateBoardRequest.builder().boardName("testBoardName").build();
-		Mockito.doAnswer((Answer<Void>) invocation -> null).when(boardRepository).save(Mockito.any());
-	}
-
-	@Test
-	public void nullInput() throws DomainException {
-
-		thrown.expect(IllegalArgumentException.class);
-
-		boardService.create(null);
 	}
 
 	@Test
 	public void nullBoardName() throws DomainException {
 
 		request.setBoardName(null);
-		thrown.expect(ConstraintViolationException.class);
-		thrown.expectMessage("boardName cannot be blank!");
+		thrown.expect(DomainException.class);
+		thrown.expectMessage(ErrorMessage.BOARD_NAME_NOT_BLANK);
 
 		boardService.create(request);
 	}
@@ -73,6 +64,7 @@ public class CreateBoardTest {
 	@Test
 	public void ok() throws DomainException {
 
+		Mockito.when(boardRepository.save(Mockito.any(Board.class))).thenReturn(TestUtil.getTestBoard());
 		CreateBoardResponse response = boardService.create(request);
 		Assert.assertNotNull(response);
 		Assert.assertEquals(response.getBoardName(), request.getBoardName());
