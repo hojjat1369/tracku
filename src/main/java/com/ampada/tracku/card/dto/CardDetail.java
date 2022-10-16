@@ -15,5 +15,5 @@ public class CardDetail {
 
 	private String cardTitle;
 	private String boardId;
-	private List<Long> userId;
+	private List<String> userId;
 }

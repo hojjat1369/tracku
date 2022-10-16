@@ -29,7 +29,7 @@ public class CreateCardRequest extends CommonRequest {
 	@NotNull(message = ErrorMessage.BOARD_NOT_BLANK)
 	private String boardId;
 
-	private List<Long> userId;
+	private List<String> userId;
 
 	@Override
 	public void validate() throws DomainException {

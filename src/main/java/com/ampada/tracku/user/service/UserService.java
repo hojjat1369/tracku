@@ -19,5 +19,5 @@ public interface UserService {
 
 	LoginResponse authenticate(@NotNull LoginRequest loginRequest) throws DomainException;
 
-	List<User> getByIds(@NotNull List<Long> ids) throws DomainException;
+	List<User> getByIds(@NotNull List<String> ids) throws DomainException;
 }

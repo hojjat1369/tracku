@@ -1,6 +1,7 @@
 package com.ampada.tracku.user.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,9 +50,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getByIds(@NotNull List<Long> ids) throws DomainException {
+	public List<User> getByIds(@NotNull List<String> ids) throws DomainException {
 
-		return userRepository.findAll();
+		List<User> users = new ArrayList<>();
+		if (!ids.isEmpty()){
+			for (String id : ids){
+				Optional<User> findById = userRepository.findById(id);
+				if (findById.isPresent())
+					users.add(findById.get());
+			}
+		}
+		return users;
 	}
 
 }

@@ -60,7 +60,7 @@ public class CreateCardTest {
 	public void setup() {
 
 		MockitoAnnotations.initMocks(this);
-		request = CreateCardRequest.builder().cardTitle("testBoardName").boardId("10").userId(Arrays.asList(1l, 2l)).build();
+		request = CreateCardRequest.builder().cardTitle("testBoardName").boardId("10").userId(Arrays.asList("1", "2")).build();
 		Mockito.doAnswer((Answer<Void>) invocation -> null).when(cardRepository).save(Mockito.any());
 	}
 

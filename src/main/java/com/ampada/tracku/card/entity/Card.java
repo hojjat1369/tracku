@@ -1,6 +1,7 @@
 package com.ampada.tracku.card.entity;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,7 +50,7 @@ public class Card extends AbstractEntity {
 		if (users != null && !users.isEmpty()){
 			return users.stream().map(User::getId).collect(Collectors.toList());
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 }

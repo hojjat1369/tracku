@@ -27,7 +27,7 @@ public class UpdateCardRequest extends CommonRequest {
 	private String cardTitle;
 	private String boardId;
 
-	private List<Long> userId;
+	private List<String> userId;
 
 	@Override
 	public void validate() throws DomainException {
