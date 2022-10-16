@@ -6,6 +6,8 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.ampada.tracku.card.repository.CardDslRepository;
+import com.ampada.tracku.card.repository.CardDslRepositoryImpl;
 import com.ampada.tracku.common.util.JwtTokenUtil;
 
 
@@ -24,5 +26,11 @@ public class ApplicationConfig {
 	public JwtTokenUtil jwtTokenUtil() {
 
 		return new JwtTokenUtil();
+	}
+
+	@Bean
+	public CardDslRepository cardDslRepository() {
+
+		return new CardDslRepositoryImpl();
 	}
 }
